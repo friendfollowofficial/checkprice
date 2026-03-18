@@ -15,185 +15,110 @@ body {
   align-items: center;
   background: linear-gradient(135deg, #f3e7ff, #e7f3ff);
   font-family: 'Mali', sans-serif;
-  overflow: hidden;
 }
 
-/* loading */
-.loading-box {
+/* กล่อง */
+.container {
   text-align: center;
 }
 
+/* โลโก้ */
 .logo {
   font-size: 22px;
   font-weight: bold;
-  color: #ff4fa3;
+  background: linear-gradient(45deg, #ff4fa3, #ff7ecb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
+/* 🔥 วงหมุนหลัก */
 .loader {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
-  border: 5px solid rgba(255,79,163,0.2);
-  border-top: 5px solid #ff4fa3;
+  border: 6px solid rgba(255,79,163,0.2);
+  border-top: 6px solid #ff4fa3;
+  margin: 20px auto;
+
   animation: spin 1s linear infinite;
-  margin: 15px auto;
+
+  box-shadow:
+    0 0 20px rgba(255,79,163,0.4),
+    0 0 40px rgba(255,79,163,0.2);
 }
 
-.text {
-  font-size: 13px;
-  color: #777;
+/* ✨ วงหมุนซ้อน (เท่ขึ้น) */
+.loader::after {
+  content: "";
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 4px solid rgba(255,120,200,0.2);
+  border-bottom: 4px solid #ff7ecb;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: spinReverse 1.5s linear infinite;
 }
 
+/* animation */
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-/* popup */
-.popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.85);
-  background: rgba(255,255,255,0.95);
-  padding: 25px;
-  border-radius: 25px;
-  text-align: center;
-  width: 85%;
-  max-width: 320px;
-
-  box-shadow:
-    0 20px 60px rgba(0,0,0,0.2),
-    0 0 30px rgba(255,79,163,0.3);
-
-  opacity: 0;
-  animation: pop 0.4s forwards;
+@keyframes spinReverse {
+  to { transform: translate(-50%, -50%) rotate(-360deg); }
 }
 
-@keyframes pop {
-  to {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
+/* ข้อความ */
+.text {
+  font-size: 14px;
+  color: #666;
+  margin-top: 10px;
 }
 
-.popup h2 {
-  color: #ff4fa3;
-  font-size: 18px;
-  margin-bottom: 8px;
-}
-
-.desc {
-  font-size: 13px;
-  color: #555;
-}
-
-.price {
-  font-size: 24px;
-  font-weight: bold;
-  color: #ff4fa3;
-  margin: 10px 0;
-}
-
-/* badge */
-.limit {
+/* ข้อความย่อย */
+.sub {
   font-size: 12px;
-  background: #ff4fa3;
-  color: white;
-  padding: 6px;
-  border-radius: 10px;
-  margin-top: 8px;
-  animation: pulse 1s infinite;
+  color: #999;
+  margin-top: 5px;
 }
 
-@keyframes pulse {
-  50% { transform: scale(1.05); }
+/* จุดกระพริบ ... */
+.dots::after {
+  content: "";
+  animation: dots 1.5s infinite;
 }
 
-/* live */
-.live {
-  font-size: 12px;
-  color: #ff4fa3;
-  margin-top: 6px;
-}
-
-/* btn */
-.line-btn {
-  display: block;
-  margin-top: 12px;
-  padding: 12px;
-  border-radius: 15px;
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-  background: linear-gradient(45deg, #00c300, #00e676);
-}
-
-.close {
-  margin-top: 8px;
-  font-size: 11px;
-  color: #aaa;
-  cursor: pointer;
+@keyframes dots {
+  0% { content: ""; }
+  33% { content: "."; }
+  66% { content: ".."; }
+  100% { content: "..."; }
 }
 </style>
 
 </head>
 <body>
 
-<div class="loading-box">
+<div class="container">
   <div class="logo">Friend Follow Official</div>
+
   <div class="loader"></div>
-  <div class="text">กำลังเตรียมระบบ...</div>
-</div>
 
-<div class="popup" id="popup">
-  <h2>🔥 โปรแรง ลูกค้าใหม่</h2>
-
-  <div class="desc">ดันคลิปขึ้นฟีด • วิวไทยแท้ 100%</div>
-
-  <div class="price">เริ่มเพียง 129 บาท</div>
-
-  <div class="limit" id="limitText">เหลือ 7 สิทธิ์</div>
-
-  <div class="live" id="liveText"></div>
-
-  <a href="https://line.me/R/ti/p/@geg4960w" target="_blank" class="line-btn">
-    💬 สั่งซื้อทันที
-  </a>
-
-  <div class="close" onclick="closePopup()">ข้าม</div>
+  <div class="text">กำลังเช็คราคา<span class="dots"></span></div>
+  <div class="sub">ระบบกำลังประมวลผลแบบเรียลไทม์</div>
 </div>
 
 <script>
-let target = "https://script.google.com/macros/s/AKfycbzpLxgX_m8jw12zvWsirxar4mL-ZCSMXICybCd90_-p-o44p9KLUJiQn6XDY2mfzftO/exec";
+// 🔗 ลิงก์ของคุณ
+let target = "https://script.google.com/macros/s/AKfycbxYiQO5LCOCDJjzTrotbAHyHfXELNkdzZav0vnMVoQZCcvnrUkSRGOXB8_1_UdrBOJM/exec";
 
-function closePopup() {
-  document.getElementById("popup").style.display = "none";
-}
-
-// live
-function updateLive() {
-  let num = Math.floor(Math.random() * 30) + 50;
-  document.getElementById("liveText").innerText =
-    "👥 มี " + num + " คน กำลังดูโปรนี้";
-}
-
-// limit
-let limit = 7;
-setInterval(() => {
-  if (limit > 3 && Math.random() > 0.6) {
-    limit--;
-    document.getElementById("limitText").innerText =
-      "เหลือ " + limit + " สิทธิ์";
-  }
-}, 2000);
-
-updateLive();
-setInterval(updateLive, 4000);
-
-// redirect
+// ⏳ เด้งไปหน้าเว็บ
 setTimeout(() => {
   window.location.href = target;
-}, 3500);
+}, 2000);
 </script>
 
 </body>
