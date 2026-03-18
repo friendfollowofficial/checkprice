@@ -18,9 +18,9 @@ body {
   overflow: hidden;
 }
 
+/* loading */
 .loading-box {
   text-align: center;
-  z-index: 2;
 }
 
 .logo {
@@ -39,6 +39,11 @@ body {
   margin: 15px auto;
 }
 
+.text {
+  font-size: 13px;
+  color: #777;
+}
+
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
@@ -48,22 +53,20 @@ body {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.8);
+  transform: translate(-50%, -50%) scale(0.85);
   background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(20px);
   padding: 25px;
   border-radius: 25px;
   text-align: center;
   width: 85%;
   max-width: 320px;
-  z-index: 10;
 
   box-shadow:
     0 20px 60px rgba(0,0,0,0.2),
     0 0 30px rgba(255,79,163,0.3);
 
   opacity: 0;
-  animation: pop 0.5s forwards;
+  animation: pop 0.4s forwards;
 }
 
 @keyframes pop {
@@ -75,23 +78,30 @@ body {
 
 .popup h2 {
   color: #ff4fa3;
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.desc {
+  font-size: 13px;
+  color: #555;
 }
 
 .price {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
   color: #ff4fa3;
   margin: 10px 0;
 }
 
-/* 🔥 สิทธิ์ */
+/* badge */
 .limit {
-  margin-top: 8px;
-  font-size: 13px;
+  font-size: 12px;
+  background: #ff4fa3;
   color: white;
-  background: linear-gradient(45deg, #ff4fa3, #ff7ecb);
   padding: 6px;
   border-radius: 10px;
+  margin-top: 8px;
   animation: pulse 1s infinite;
 }
 
@@ -99,18 +109,18 @@ body {
   50% { transform: scale(1.05); }
 }
 
-/* 👥 */
+/* live */
 .live {
   font-size: 12px;
   color: #ff4fa3;
-  margin-top: 8px;
+  margin-top: 6px;
 }
 
-/* LINE */
+/* btn */
 .line-btn {
   display: block;
   margin-top: 12px;
-  padding: 10px;
+  padding: 12px;
   border-radius: 15px;
   text-decoration: none;
   color: white;
@@ -120,8 +130,8 @@ body {
 
 .close {
   margin-top: 8px;
-  font-size: 12px;
-  color: #999;
+  font-size: 11px;
+  color: #aaa;
   cursor: pointer;
 }
 </style>
@@ -132,43 +142,42 @@ body {
 <div class="loading-box">
   <div class="logo">Friend Follow Official</div>
   <div class="loader"></div>
+  <div class="text">กำลังเตรียมระบบ...</div>
 </div>
 
 <div class="popup" id="popup">
-  <h2>🎉 Promotion ลูกค้าใหม่</h2>
-  <p>🔥 ดันคลิปขึ้นฟีด</p>
-  <div class="price">129 บาท</div>
+  <h2>🔥 โปรแรง ลูกค้าใหม่</h2>
 
-  <p>🇹🇭 วิวคนไทย 100%<br>🚀 เพิ่มโอกาสไวรัล</p>
+  <div class="desc">ดันคลิปขึ้นฟีด • วิวไทยแท้ 100%</div>
+
+  <div class="price">เริ่มเพียง 129 บาท</div>
 
   <div class="limit" id="limitText">เหลือ 7 สิทธิ์</div>
+
   <div class="live" id="liveText"></div>
 
   <a href="https://line.me/R/ti/p/@geg4960w" target="_blank" class="line-btn">
-    💬 สั่งซื้อเลย
+    💬 สั่งซื้อทันที
   </a>
 
   <div class="close" onclick="closePopup()">ข้าม</div>
 </div>
 
 <script>
-// ✅ ลิงก์ใหม่ของคุณ
 let target = "https://script.google.com/macros/s/AKfycbzpLxgX_m8jw12zvWsirxar4mL-ZCSMXICybCd90_-p-o44p9KLUJiQn6XDY2mfzftO/exec";
 
 function closePopup() {
   document.getElementById("popup").style.display = "none";
 }
 
-// 👥 คนกำลังดู
+// live
 function updateLive() {
-  let base = Math.floor(Math.random() * 30) + 50;
-  let num = base + Math.floor(Math.random() * 10);
-
+  let num = Math.floor(Math.random() * 30) + 50;
   document.getElementById("liveText").innerText =
-    "👥 ตอนนี้มี " + num + " คน กำลังดูโปรนี้";
+    "👥 มี " + num + " คน กำลังดูโปรนี้";
 }
 
-// 🔥 สิทธิ์ลด
+// limit
 let limit = 7;
 setInterval(() => {
   if (limit > 3 && Math.random() > 0.6) {
@@ -181,7 +190,7 @@ setInterval(() => {
 updateLive();
 setInterval(updateLive, 4000);
 
-// ⏳ เด้งเข้าเว็บ
+// redirect
 setTimeout(() => {
   window.location.href = target;
 }, 3500);
