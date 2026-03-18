@@ -13,89 +13,136 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #f3e7ff, #e7f3ff);
+  background: radial-gradient(circle at top, #f3e7ff, #e7f3ff);
   font-family: 'Mali', sans-serif;
+  overflow: hidden;
 }
 
-/* กล่อง */
+/* 🔥 loading */
 .container {
   text-align: center;
+  z-index: 2;
 }
 
-/* โลโก้ */
 .logo {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
   background: linear-gradient(45deg, #ff4fa3, #ff7ecb);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-/* 🔥 วงหมุนหลัก */
+/* 💎 วงหมุน 2 ชั้น */
 .loader {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  border: 6px solid rgba(255,79,163,0.2);
-  border-top: 6px solid #ff4fa3;
+  position: relative;
+  width: 80px;
+  height: 80px;
   margin: 20px auto;
-
-  animation: spin 1s linear infinite;
-
-  box-shadow:
-    0 0 20px rgba(255,79,163,0.4),
-    0 0 40px rgba(255,79,163,0.2);
 }
 
-/* ✨ วงหมุนซ้อน (เท่ขึ้น) */
-.loader::after {
-  content: "";
+.loader div {
   position: absolute;
-  width: 50px;
-  height: 50px;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  border: 4px solid rgba(255,120,200,0.2);
-  border-bottom: 4px solid #ff7ecb;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  border: 5px solid transparent;
+}
+
+.loader .outer {
+  border-top: 5px solid #ff4fa3;
+  animation: spin 1s linear infinite;
+  box-shadow: 0 0 25px rgba(255,79,163,0.5);
+}
+
+.loader .inner {
+  width: 60%;
+  height: 60%;
+  top: 20%;
+  left: 20%;
+  border-bottom: 5px solid #ff7ecb;
   animation: spinReverse 1.5s linear infinite;
 }
 
-/* animation */
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
 @keyframes spinReverse {
-  to { transform: translate(-50%, -50%) rotate(-360deg); }
+  to { transform: rotate(-360deg); }
 }
 
-/* ข้อความ */
+/* ✨ ข้อความ */
 .text {
   font-size: 14px;
-  color: #666;
+  color: #555;
   margin-top: 10px;
+  transition: 0.3s;
 }
 
-/* ข้อความย่อย */
-.sub {
+/* popup */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.85);
+  background: rgba(255,255,255,0.95);
+  padding: 25px;
+  border-radius: 25px;
+  text-align: center;
+  width: 85%;
+  max-width: 320px;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,0.2),
+    0 0 40px rgba(255,79,163,0.3);
+
+  opacity: 0;
+  animation: pop 0.4s forwards;
+}
+
+@keyframes pop {
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.popup h2 {
+  color: #ff4fa3;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ff4fa3;
+  margin: 10px 0;
+}
+
+/* 👥 live */
+.live {
   font-size: 12px;
-  color: #999;
-  margin-top: 5px;
+  color: #ff4fa3;
+  margin-top: 8px;
 }
 
-/* จุดกระพริบ ... */
-.dots::after {
-  content: "";
-  animation: dots 1.5s infinite;
+/* LINE */
+.line-btn {
+  display: block;
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 15px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  background: linear-gradient(45deg, #00c300, #00e676);
 }
 
-@keyframes dots {
-  0% { content: ""; }
-  33% { content: "."; }
-  66% { content: ".."; }
-  100% { content: "..."; }
+/* close */
+.close {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #aaa;
+  cursor: pointer;
 }
 </style>
 
@@ -105,20 +152,68 @@ body {
 <div class="container">
   <div class="logo">Friend Follow Official</div>
 
-  <div class="loader"></div>
+  <div class="loader">
+    <div class="outer"></div>
+    <div class="inner"></div>
+  </div>
 
-  <div class="text">กำลังเช็คราคา<span class="dots"></span></div>
-  <div class="sub">ระบบกำลังประมวลผลแบบเรียลไทม์</div>
+  <div class="text" id="loadingText">กำลังโหลดระบบ...</div>
+</div>
+
+<!-- 🎉 popup -->
+<div class="popup" id="popup">
+  <h2>🔥 โปรแรง ลูกค้าใหม่</h2>
+
+  <div class="price">เริ่ม 129 บาท</div>
+
+  <p>🇹🇭 วิวคนไทยแท้ 100%<br>🚀 เพิ่มโอกาสติด For You</p>
+
+  <div class="live" id="liveText"></div>
+
+  <a href="https://line.me/R/ti/p/@geg4960w" target="_blank" class="line-btn">
+    💬 สั่งซื้อทันที
+  </a>
+
+  <div class="close" onclick="closePopup()">ข้าม</div>
 </div>
 
 <script>
-// 🔗 ลิงก์ของคุณ
-let target = "https://script.google.com/macros/s/AKfycbzpLxgX_m8jw12zvWsirxar4mL-ZCSMXICybCd90_-p-o44p9KLUJiQn6XDY2mfzftO/exec";
+let target = "https://script.google.com/macros/s/AKfycbxYiQO5LCOCDJjzTrotbAHyHfXELNkdzZav0vnMVoQZCcvnrUkSRGOXB8_1_UdrBOJM/exec";
 
-// ⏳ เด้งไปหน้าเว็บ
+// ❌ ปิด popup
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+
+// 👥 live
+function updateLive() {
+  let num = Math.floor(Math.random() * 30) + 50;
+  document.getElementById("liveText").innerText =
+    "👥 มี " + num + " คน กำลังดูโปรนี้";
+}
+
+// 🔥 ข้อความ loading เปลี่ยน
+let texts = [
+  "กำลังเช็คราคาที่ดีที่สุด...",
+  "กำลังวิเคราะห์ระบบ...",
+  "กำลังเตรียมโปรโมชั่น...",
+  "กำลังโหลดข้อมูลแบบเรียลไทม์...",
+  "ใกล้เสร็จแล้ว..."
+];
+
+let i = 0;
+setInterval(() => {
+  document.getElementById("loadingText").innerText = texts[i];
+  i = (i + 1) % texts.length;
+}, 1200);
+
+updateLive();
+setInterval(updateLive, 4000);
+
+// ⏳ redirect
 setTimeout(() => {
   window.location.href = target;
-}, 2000);
+}, 3500);
 </script>
 
 </body>
