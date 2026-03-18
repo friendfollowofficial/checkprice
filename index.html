@@ -6,9 +6,7 @@
 
 <title>Friend Follow Official</title>
 
-<!-- ⚡ preload -->
 <link rel="preconnect" href="https://script.google.com">
-<link rel="dns-prefetch" href="https://script.google.com">
 
 <style>
 body {
@@ -22,158 +20,144 @@ body {
   background-size: 200% 200%;
   animation: bgMove 6s ease infinite;
 
-  font-family: 'Mali', sans-serif;
-
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.5s ease;
 }
 
-/* 🌈 background animation */
 @keyframes bgMove {
   50% { background-position: 100% 50%; }
 }
 
-/* 💎 container */
+/* container */
 .container {
   text-align: center;
+  width: 80%;
+  max-width: 320px;
 }
 
-/* 💖 logo */
+/* logo */
 .logo {
-  font-size: 22px;
-  font-weight: bold;
-  background: linear-gradient(45deg, #ff4fa3, #ff7ecb);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: float 2s ease-in-out infinite;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
-@keyframes float {
-  50% { transform: translateY(-5px); }
-}
-
-/* 🔥 loader */
-.loader {
-  position: relative;
-  width: 85px;
-  height: 85px;
-  margin: 20px auto;
-}
-
-/* outer */
-.outer {
-  width: 100%;
-  height: 100%;
+/* 🍏 spinner */
+.spinner {
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  border: 5px solid rgba(255,79,163,0.2);
-  border-top: 5px solid #ff4fa3;
-  animation: spin 1s linear infinite;
-
-  box-shadow:
-    0 0 25px rgba(255,79,163,0.5),
-    0 0 50px rgba(255,79,163,0.2);
-}
-
-/* inner */
-.inner {
-  position: absolute;
-  top: 22%;
-  left: 22%;
-  width: 56%;
-  height: 56%;
-  border-radius: 50%;
-  border: 4px solid rgba(255,120,200,0.2);
-  border-bottom: 4px solid #ff7ecb;
-  animation: spinReverse 1.5s linear infinite;
+  border: 4px solid rgba(0,0,0,0.1);
+  border-top: 4px solid #ff4fa3;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 20px;
 }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-@keyframes spinReverse {
-  to { transform: rotate(-360deg); }
-}
-
-/* 💬 text */
-.text {
-  font-size: 14px;
-  color: #666;
+/* 📊 progress bar */
+.bar {
+  width: 100%;
+  height: 8px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 10px;
+  overflow: hidden;
   margin-top: 10px;
+}
+
+.fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ff4fa3, #ff7ecb);
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+/* % */
+.percent {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* text */
+.text {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #777;
   transition: 0.3s;
-}
-
-/* 🫧 bubbles */
-.bubbles span {
-  position: absolute;
-  bottom: -100px;
-  width: 12px;
-  height: 12px;
-  background: rgba(255,255,255,0.6);
-  border-radius: 50%;
-  animation: bubble 12s linear infinite;
-}
-
-.bubbles span:nth-child(1){ left:10%; }
-.bubbles span:nth-child(2){ left:30%; }
-.bubbles span:nth-child(3){ left:60%; }
-.bubbles span:nth-child(4){ left:85%; }
-
-@keyframes bubble {
-  0% { transform: translateY(0); opacity:0; }
-  20% { opacity:1; }
-  100% { transform: translateY(-120vh); opacity:0; }
 }
 </style>
 
 </head>
 <body>
 
-<div class="bubbles">
-  <span></span><span></span><span></span><span></span>
-</div>
-
 <div class="container">
   <div class="logo">Friend Follow Official</div>
 
-  <div class="loader">
-    <div class="outer"></div>
-    <div class="inner"></div>
+  <div class="spinner"></div>
+
+  <div class="bar">
+    <div class="fill" id="fill"></div>
   </div>
 
-  <div class="text" id="loadingText">💖 กำลังเช็คราคาให้อยู่น้า...</div>
+  <div class="percent" id="percent">0%</div>
+
+  <div class="text" id="loadingText">กำลังโหลด...</div>
 </div>
 
 <script>
 let target = "https://script.google.com/macros/s/AKfycbzpLxgX_m8jw12zvWsirxar4mL-ZCSMXICybCd90_-p-o44p9KLUJiQn6XDY2mfzftO/exec";
 
-// ✨ fade in
+// fade in
 window.onload = () => {
   document.body.style.opacity = 1;
 };
 
-// 🔄 ข้อความเปลี่ยน
+// 🧠 fake progress แบบเนียน
+let progress = 0;
+let fill = document.getElementById("fill");
+let percent = document.getElementById("percent");
+
 let texts = [
-  "💖 กำลังเช็คราคาให้อยู่น้า...",
-  "✨ กำลังหาดีลที่คุ้มที่สุด...",
-  "🎀 โหลดโปรโมชั่นพิเศษ...",
-  "💫 ใกล้เสร็จแล้วนิดนึง...",
-  "🚀 พร้อมแล้ว!"
+  "💖 กำลังเช็คราคา...",
+  "✨ กำลังหาดีลที่ดีที่สุด...",
+  "🎀 โหลดโปรโมชั่น...",
+  "💫 ประมวลผลข้อมูล...",
+  "🚀 ใกล้เสร็จแล้ว..."
 ];
 
 let i = 0;
+
+// progress loop
+let interval = setInterval(() => {
+  progress += Math.random() * 15;
+
+  if (progress >= 100) {
+    progress = 100;
+    clearInterval(interval);
+
+    // fade out
+    document.body.style.opacity = 0;
+
+    setTimeout(() => {
+      window.location.href = target;
+    }, 400);
+  }
+
+  fill.style.width = progress + "%";
+  percent.innerText = Math.floor(progress) + "%";
+
+}, 300);
+
+// เปลี่ยนข้อความ
 setInterval(() => {
   document.getElementById("loadingText").innerText = texts[i];
   i = (i + 1) % texts.length;
-}, 1100);
-
-// 🚀 redirect แบบเนียน
-setTimeout(() => {
-  document.body.style.opacity = 0; // fade out
-  setTimeout(() => {
-    window.location.href = target;
-  }, 500);
-}, 2300);
+}, 1000);
 </script>
 
 </body>
