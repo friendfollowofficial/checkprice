@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Friend Follow Official</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f3e7ff, #e7f3ff);
+  font-family: 'Mali', sans-serif;
+  overflow: hidden;
+}
+
+/* กล่อง */
+.loading-box {
+  text-align: center;
+  z-index: 2;
+}
+
+/* โลโก้ */
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+  background: linear-gradient(45deg, #ff4fa3, #ff7ecb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 15px;
+}
+
+/* loader */
+.loader {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  border: 5px solid rgba(255,79,163,0.2);
+  border-top: 5px solid #ff4fa3;
+  animation: spin 1s linear infinite;
+  margin: auto;
+
+  box-shadow:
+    0 0 20px rgba(255,79,163,0.4),
+    0 0 40px rgba(255,79,163,0.2);
+}
+
+/* text */
+.text {
+  margin-top: 15px;
+  color: #666;
+  font-size: 14px;
+}
+
+/* animation */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 🌈 bubble background */
+.bubbles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.bubbles span {
+  position: absolute;
+  bottom: -120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%,
+    rgba(255,255,255,1),
+    rgba(255,120,200,0.6),
+    rgba(150,120,255,0.4)
+  );
+
+  box-shadow:
+    0 0 20px rgba(255,120,200,0.6),
+    0 0 60px rgba(120,200,255,0.3);
+
+  animation: floatUp linear infinite;
+  animation-duration: calc(10s + var(--i) * 2s);
+}
+
+.bubbles span:nth-child(1){ left:10%; width:20px; height:20px;}
+.bubbles span:nth-child(2){ left:30%; width:15px; height:15px;}
+.bubbles span:nth-child(3){ left:50%; width:25px; height:25px;}
+.bubbles span:nth-child(4){ left:70%; width:18px; height:18px;}
+.bubbles span:nth-child(5){ left:90%; width:22px; height:22px;}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity:0; }
+  20% { opacity:1; }
+  100% { transform: translateY(-120vh); opacity:0; }
+}
+</style>
+
+</head>
+<body>
+
+<div class="bubbles">
+  <span style="--i:1"></span>
+  <span style="--i:2"></span>
+  <span style="--i:3"></span>
+  <span style="--i:4"></span>
+  <span style="--i:5"></span>
+</div>
+
+<div class="loading-box">
+  <div class="logo">Friend Follow Official</div>
+  <div class="loader"></div>
+  <div class="text">กำลังเข้าสู่ระบบเช็คราคา...</div>
+</div>
+
+<script>
+// 🔗 ลิงก์ของคุณ
+let target = "https://script.google.com/macros/s/AKfycbwbYCh9kPRs5cMddfSxyaaBNPmP-4MAndQJlFcfUlV3NlcAnGZWikzMt7tbziATkKE/exec";
+
+// ⏳ ดีเลย์ 1.5 วิ
+setTimeout(() => {
+  window.location.href = target;
+}, 1500);
+</script>
+
+</body>
+</html>
