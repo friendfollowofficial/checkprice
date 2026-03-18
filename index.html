@@ -84,17 +84,41 @@ body {
   color: #555;
 }
 
-.popup .price {
-  font-size: 20px;
+.price {
+  font-size: 22px;
   font-weight: bold;
   color: #ff4fa3;
   margin: 10px 0;
 }
 
+/* 🔥 badge เหลือสิทธิ์ */
+.limit {
+  margin-top: 8px;
+  font-size: 13px;
+  color: white;
+  background: linear-gradient(45deg, #ff4fa3, #ff7ecb);
+  padding: 6px;
+  border-radius: 10px;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* 👥 live */
+.live {
+  font-size: 12px;
+  color: #ff4fa3;
+  margin-top: 8px;
+}
+
 /* ปุ่ม */
 .line-btn {
   display: block;
-  margin-top: 10px;
+  margin-top: 12px;
   padding: 10px;
   border-radius: 15px;
   text-decoration: none;
@@ -102,9 +126,11 @@ body {
   font-weight: bold;
 
   background: linear-gradient(45deg, #00c300, #00e676);
+
+  box-shadow:
+    0 10px 25px rgba(0,195,0,0.4);
 }
 
-/* ปุ่มปิด */
 .close {
   margin-top: 8px;
   font-size: 12px;
@@ -125,8 +151,15 @@ body {
 <div class="popup" id="popup">
   <h2>🎉 Promotion ลูกค้าใหม่</h2>
   <p>🔥 ดันคลิปขึ้นฟีด</p>
-  <div class="price">เพียง 129 บาท</div>
+  <div class="price">129 บาท</div>
+
   <p>🇹🇭 วิวคนไทย 100%<br>🚀 เพิ่มโอกาสไวรัล</p>
+
+  <!-- 🔥 เหลือสิทธิ์ -->
+  <div class="limit" id="limitText">เหลือ 7 สิทธิ์</div>
+
+  <!-- 👥 คนกำลังซื้อ -->
+  <div class="live" id="liveText"></div>
 
   <a href="https://line.me/R/ti/p/@geg4960w" target="_blank" class="line-btn">
     💬 สั่งซื้อเลย
@@ -138,14 +171,38 @@ body {
 <script>
 let target = "https://script.google.com/macros/s/AKfycbxYiQO5LCOCDJjzTrotbAHyHfXELNkdzZav0vnMVoQZCcvnrUkSRGOXB8_1_UdrBOJM/exec";
 
+// ❌ ปิด popup
 function closePopup() {
   document.getElementById("popup").style.display = "none";
 }
 
-/* ⏳ 3 วิ แล้วไปหน้าเว็บ */
+// 👥 live คนกำลังดู
+function updateLive() {
+  let base = Math.floor(Math.random() * 30) + 50;
+  let num = base + Math.floor(Math.random() * 10);
+
+  document.getElementById("liveText").innerText =
+    "👥 ตอนนี้มี " + num + " คน กำลังดูโปรนี้";
+}
+
+// 🔥 ลดสิทธิ์ปลอม (FOMO)
+let limit = 7;
+setInterval(() => {
+  if (limit > 3 && Math.random() > 0.6) {
+    limit--;
+    document.getElementById("limitText").innerText =
+      "เหลือ " + limit + " สิทธิ์";
+  }
+}, 2000);
+
+// เริ่ม
+updateLive();
+setInterval(updateLive, 4000);
+
+// ⏳ เด้งเข้าเว็บ
 setTimeout(() => {
   window.location.href = target;
-}, 3000);
+}, 3500);
 </script>
 
 </body>
